@@ -7,7 +7,7 @@
         public string LastName { get; set; }
         public string MailAddress { get; set; }
 
-        public List<Borrow>? BorrowedEqupiment { get; set; }
+        public List<Borrow>? BorrowedEquipment { get; set; }
 
     }
 }

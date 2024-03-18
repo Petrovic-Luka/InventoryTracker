@@ -23,7 +23,7 @@ namespace InventoryTracker.BusinessLogic
             return await repository.GetAllEmployeesAsync();
         }
 
-        public async Task<Employee> GetEmployeeByIdAsync(Guid id)
+        public async Task<Employee?> GetEmployeeByIdAsync(Guid id)
         {
             return await repository.GetEmployeeById(id);
         }

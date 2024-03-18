@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using InventoryTracker.API.Mappers;
 using InventoryTracker.BusinessLogic.Interfaces;
-using InventoryTracker.DataAccess.Interfaces;
 using InventoryTracker.Domain;
 using InventoryTrackerDTO;
 using Microsoft.AspNetCore.Mvc;

@@ -5,9 +5,11 @@
 
         public Guid EquipmentId { get; set; }
         public Guid EmployeeId { get; set; }
+        public DateOnly StartDate { get; set; }
+        public int ClassRoomId { get; set; }
+        public DateOnly? EndDate { get; set; }
+        public ClassRoom? ClassRoom { get; set; }
         public Equipment? Equipment { get; set; }
         public Employee? Employee { get; set; }
-        public int ClassRoomId { get; set; }
-        public ClassRoom? ClassRoom { get; set; }
     }
 }

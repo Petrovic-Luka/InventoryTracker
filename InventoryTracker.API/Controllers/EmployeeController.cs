@@ -27,7 +27,7 @@ namespace InventoryTracker.API.Controllers
                 await logic.CreateEmployeeAsync(temp);
                 return Ok();
             }
-            catch(ArgumentException ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -35,7 +35,7 @@ namespace InventoryTracker.API.Controllers
             {
 
                 return StatusCode(500, ex.Message);
-            }     
+            }
         }
 
         [HttpGet]
@@ -44,6 +44,24 @@ namespace InventoryTracker.API.Controllers
             try
             {
                 return Ok(await logic.GetAllEmployeesAsync());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetEmployeeById(Guid id)
+        {
+            try
+            {
+                
+                return Ok(await logic.GetEmployeeByIdAsync(id));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

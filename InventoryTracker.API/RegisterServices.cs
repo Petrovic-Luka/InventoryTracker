@@ -24,13 +24,12 @@ namespace InventoryTracker.API
             //Domain models
 
             //employee
-            builder.Services.AddSingleton<IEmployeeRepository, EmployeeInMemoryRepository>();
-            builder.Services.AddSingleton<IEmployeeLogic, EmployeeLogic>();
+            builder.Services.AddTransient<IEmployeeRepository, EmployeeSQLRepository>();
+            builder.Services.AddTransient<IEmployeeLogic, EmployeeLogic>();
 
             //equipment
             builder.Services.AddTransient<IEquipmentLogic, EquipmentLogic>();
             builder.Services.AddTransient<IEquipmentRepository, EquipmentSQLRepository>();
-
         }
     }
 }

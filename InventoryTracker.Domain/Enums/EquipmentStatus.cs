@@ -2,6 +2,6 @@
 {
     public enum EquipmentStatus
     {
-        Free,Taken,OutOfService
+        Free,Taken,WrittenOff,Expended
     }
 }

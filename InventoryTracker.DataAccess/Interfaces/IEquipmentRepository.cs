@@ -9,6 +9,6 @@ namespace InventoryTracker.DataAccess.Interfaces
         public Task UpdateEquipment(Equipment equipment);
         public Task<List<Equipment>> GetAllEquipment();
         public Task<Equipment> GetEquipmentById(Guid id);
-        public Task<List<Equipment>> GetEquipmentByType(Guid typeId, EquipmentStatus status);
+        public Task<List<Equipment>> GetEquipmentByType(int typeId, bool available);
     }
 }

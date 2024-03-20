@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using InventoryTracker.BusinessLogic.Interfaces;
 using InventoryTracker.Domain;
-using InventoryTrackerDTO;
+using InventoryTrackerDTO.Employee;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryTracker.API.Controllers
@@ -19,7 +19,7 @@ namespace InventoryTracker.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEmployee(EmployeeDTO employeeDTO)
+        public async Task<IActionResult> CreateEmployee(CreateEmployeeDTO employeeDTO)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace InventoryTracker.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEmployee(EmployeeDTO employeeDTO)
+        public async Task<IActionResult> UpdateEmployee(CreateEmployeeDTO employeeDTO)
         {
             try
             {

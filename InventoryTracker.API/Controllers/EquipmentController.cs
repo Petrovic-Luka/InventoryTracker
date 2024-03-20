@@ -1,5 +1,7 @@
-﻿using InventoryTracker.BusinessLogic.Interfaces;
+﻿using AutoMapper;
+using InventoryTracker.BusinessLogic.Interfaces;
 using InventoryTracker.Domain;
+using InventoryTrackerDTO.Equipment;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryTracker.API.Controllers
@@ -9,18 +11,20 @@ namespace InventoryTracker.API.Controllers
     public class EquipmentController : ControllerBase
     {
         IEquipmentLogic _logic;
-
-        public EquipmentController(IEquipmentLogic logic)
+        IMapper mapper;
+        public EquipmentController(IEquipmentLogic logic, IMapper mapper)
         {
             _logic = logic;
+            this.mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEquipment(Equipment equipment)
+        public async Task<IActionResult> CreateEquipment(CreateEquipmentDTO equipment)
         {
             try
             {
-                await _logic.CreateEquipment(equipment);
+                var temp = mapper.Map<Equipment>(equipment);
+                await _logic.CreateEquipment(temp);
                 return Ok();
             }
             catch(ArgumentException ex)
@@ -37,8 +41,21 @@ namespace InventoryTracker.API.Controllers
         {
             try
             {
-
                 return Ok(await _logic.GetAllEquipment());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error has occurred");
+            }
+        }
+
+        [HttpGet("type")]
+        public async Task<IActionResult> GetEquipmentByType(int typeId,bool available)
+        {
+            try
+            {
+
+                return Ok(await _logic.GetEquipmentByType(typeId,available));
             }
             catch (Exception ex)
             {

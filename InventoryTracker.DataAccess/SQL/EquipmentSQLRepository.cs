@@ -102,10 +102,47 @@ namespace InventoryTracker.DataAccess.SQL
             throw new NotImplementedException();
         }
 
-        public Task<List<Equipment>> GetEquipmentByType(Guid typeId, EquipmentStatus status)
+        public async Task<List<Equipment>> GetEquipmentByType(int typeId, bool available)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+
+                try
+                {
+                    var output = new List<Equipment>();
+                    await connection.OpenAsync();
+                    SqlCommand cmd = connection.CreateCommand();
+                    cmd.CommandText = "select [EquipmentId],[Description],[Note],[SerialMark],[InventoryMark],[EquipmentTypeId],[Status] FROM [InventoryTrackerDB].[dbo].[Equipment] where EquipmentTypeId=@EquipmentTypeId";
+                    if (available)
+                    {
+                        cmd.CommandText += " and status=0";
+                    }
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@EquipmentTypeId", typeId);
+                    var reader = await cmd.ExecuteReaderAsync();
+                    while (reader.Read())
+                    {
+                        var equipment = new Equipment();
+                        equipment.EquipmentId = Guid.Parse(reader.GetString(0));
+                        equipment.Description = reader.GetString(1);
+                        equipment.Note = reader.GetString(2);
+                        equipment.SerialMark = reader.GetString(3);
+                        equipment.InventoryMark = reader.GetString(4);
+                        equipment.EquipmentTypeId = reader.GetInt32(5);
+                        equipment.EquipmentStatus = (EquipmentStatus)reader.GetInt32(6);
+                        output.Add(equipment);
+                    }
+                    return output;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    throw;
+                }
+            }
         }
+
+
 
         public Task UpdateEquipment()
         {

@@ -35,9 +35,9 @@ namespace InventoryTracker.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Task<List<Equipment>> GetEquipmentByType(Guid typeId, EquipmentStatus status)
+        public async Task<List<Equipment>> GetEquipmentByType(int typeId, bool available)
         {
-            throw new NotImplementedException();
+            return await repository.GetEquipmentByType(typeId, available);
         }
 
         public Task UpdateEquipment()

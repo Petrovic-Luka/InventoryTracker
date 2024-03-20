@@ -10,7 +10,7 @@ namespace InventoryTracker.API
     public static class RegisterServices
     {
         /// <summary>
-        /// Used to register all services required for dependecy injection in app
+        /// Used to register all services required for dependency injection in app
         /// </summary>
         /// <param name="builder"></param>
         public static void ConfigureServices(this WebApplicationBuilder builder)
@@ -30,6 +30,10 @@ namespace InventoryTracker.API
             //equipment
             builder.Services.AddTransient<IEquipmentLogic, EquipmentLogic>();
             builder.Services.AddTransient<IEquipmentRepository, EquipmentSQLRepository>();
+
+            //borrow
+            builder.Services.AddTransient<IBorrowLogic, BorrowLogic>();
+            builder.Services.AddTransient<IBorrowRepository, BorrowSQLRepository>();
         }
     }
 }

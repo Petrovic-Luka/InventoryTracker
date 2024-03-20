@@ -12,7 +12,7 @@ namespace InventoryTracker.DataAccess.SQL
         IConfiguration _config;
         ILogger _logger;
 
-        public EmployeeSQLRepository(IConfiguration configuration, ILogger<EquipmentSQLRepository> logger)
+        public EmployeeSQLRepository(IConfiguration configuration, ILogger<EmployeeSQLRepository> logger)
         {
             _config = configuration;
             _logger = logger;

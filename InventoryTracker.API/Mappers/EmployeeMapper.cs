@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using InventoryTracker.Domain;
-using InventoryTrackerDTO;
+using InventoryTrackerDTO.Employee;
 
 namespace InventoryTracker.API.Mappers
 {
@@ -8,7 +8,7 @@ namespace InventoryTracker.API.Mappers
     {
         public EmployeeMapper()
         {
-            CreateMap<Employee, EmployeeDTO>().ReverseMap();
+            CreateMap<Employee, CreateEmployeeDTO>().ReverseMap();
         }
 
 

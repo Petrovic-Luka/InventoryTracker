@@ -81,8 +81,7 @@ namespace InventoryTracker.API.Controllers
         {
             try
             {
-                var result = await _logic.GetBorrowsByClassRoom(id, active);
-                return Ok(result.Select(x => x.ToDisplayDTO()));
+                return Ok((await _logic.GetBorrowsByClassRoom(id, active)).Select(x => x.ToDisplayDTO()));
             }
             catch (ArgumentException ex)
             {

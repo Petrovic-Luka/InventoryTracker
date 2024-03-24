@@ -38,6 +38,10 @@ namespace InventoryTracker.API
             //classroom
             builder.Services.AddTransient<IClassRoomLogic, ClassRoomLogic>();
             builder.Services.AddTransient<IClassRoomRepository, ClassRoomSQLRepository>();
+
+            //equipment types
+            builder.Services.AddTransient<IEquipmentTypeLogic, EquipmentTypeLogic>();
+            builder.Services.AddTransient<IEquipmentTypeRepository, EquipmentTypeSQLRepository>();
         }
     }
 }

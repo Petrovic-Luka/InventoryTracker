@@ -120,8 +120,54 @@ namespace InventoryTracker.DataAccess.SQL
             }
         }
 
+        public async Task<List<Borrow>> GetBorrowsByClassRoom(Guid id, bool active)
+        {
+            using (SqlConnection connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
 
-
+                try
+                {
+                    var output = new List<Borrow>();
+                    await connection.OpenAsync();
+                    SqlCommand cmd = connection.CreateCommand();
+                    cmd.CommandText = "SELECT [borrow].[EquipmentId],[borrow].[EmployeeId],[StartDate],[ClassRoomId],[EndDate],e.MailAddress,eq.Description,eq.InventoryMark FROM [InventoryTrackerDB].[dbo].[Borrow] join Employee e on (e.EmployeeId=borrow.EmployeeId) join Equipment eq on (eq.EquipmentId=Borrow.EquipmentId) where borrow.ClassRoomId=@ClassRoomId";
+                    if (active)
+                    {
+                        cmd.CommandText += " and EndDate is Null";
+                    }
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@ClassRoomId", id);
+                    var reader = await cmd.ExecuteReaderAsync();
+                    while (reader.Read())
+                    {
+                        var borrow = new Borrow();
+                        borrow.EquipmentId = Guid.Parse(reader.GetString(0));
+                        borrow.EmployeeId = Guid.Parse(reader.GetString(1));
+                        borrow.StartDate = reader.GetDateTime(2);
+                        borrow.ClassRoomId = Guid.Parse(reader.GetString(3));
+                        borrow.EndDate = reader.GetDateTime(4);
+                        borrow.Employee = new Employee
+                        {
+                            EmployeeId = id,
+                            MailAddress = reader.GetString(5),
+                        };
+                        borrow.Equipment = new Equipment
+                        {
+                            EquipmentId = borrow.EquipmentId,
+                            Description = reader.GetString(6),
+                            InventoryMark = reader.GetString(7),
+                        };
+                        output.Add(borrow);
+                    }
+                    return output;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    throw;
+                }
+            }
+        }
 
         public async Task ReturnBorrow(Borrow borrow)
         {

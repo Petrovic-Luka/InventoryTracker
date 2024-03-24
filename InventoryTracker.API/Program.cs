@@ -12,10 +12,23 @@ namespace InventoryTracker.API
 
             RegisterServices.ConfigureServices(builder);
 
+            //CORS
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.AllowAnyHeader();
+                                      policy.AllowAnyOrigin();
+                                      policy.AllowAnyMethod();
+                                  });
+            });
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            app.UseCors(MyAllowSpecificOrigins);
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

@@ -9,5 +9,7 @@ namespace InventoryTracker.DataAccess.Interfaces
         public Task ReturnBorrow(Borrow borrow);
 
         public Task<List<Borrow>> GetBorrowsByEmployee(Guid id, bool active);
+
+        public Task<List<Borrow>> GetBorrowsByClassRoom(Guid id, bool active);
     }
 }

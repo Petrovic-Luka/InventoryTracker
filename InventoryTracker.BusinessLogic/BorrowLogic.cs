@@ -18,6 +18,11 @@ namespace InventoryTracker.BusinessLogic
             await repository.CreateBorrow(borrow);
         }
 
+        public async Task<List<Borrow>> GetBorrowsByClassRoom(Guid id, bool active)
+        {
+            return await repository.GetBorrowsByClassRoom(id, active);
+        }
+
         public async Task<List<Borrow>> GetBorrowsByEmployee(Guid id, bool active)
         {
             return await repository.GetBorrowsByEmployee(id, active);

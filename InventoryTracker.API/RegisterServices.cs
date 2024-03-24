@@ -34,6 +34,10 @@ namespace InventoryTracker.API
             //borrow
             builder.Services.AddTransient<IBorrowLogic, BorrowLogic>();
             builder.Services.AddTransient<IBorrowRepository, BorrowSQLRepository>();
+
+            //classroom
+            builder.Services.AddTransient<IClassRoomLogic, ClassRoomLogic>();
+            builder.Services.AddTransient<IClassRoomRepository, ClassRoomSQLRepository>();
         }
     }
 }

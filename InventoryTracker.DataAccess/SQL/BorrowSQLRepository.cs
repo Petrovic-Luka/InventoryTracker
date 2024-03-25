@@ -96,7 +96,10 @@ namespace InventoryTracker.DataAccess.SQL
                         borrow.EmployeeId = Guid.Parse(reader.GetString(1));
                         borrow.StartDate = reader.GetDateTime(2);
                         borrow.ClassRoomId = Guid.Parse(reader.GetString(3));
-                        borrow.EndDate = reader.GetDateTime(4);
+                        if (!reader.IsDBNull(4))
+                        {
+                            borrow.EndDate = reader.GetDateTime(4);
+                        }
                         borrow.Employee = new Employee
                         {
                             EmployeeId = id,
@@ -145,7 +148,10 @@ namespace InventoryTracker.DataAccess.SQL
                         borrow.EmployeeId = Guid.Parse(reader.GetString(1));
                         borrow.StartDate = reader.GetDateTime(2);
                         borrow.ClassRoomId = Guid.Parse(reader.GetString(3));
-                        borrow.EndDate = reader.GetDateTime(4);
+                        if (!reader.IsDBNull(4))
+                        {
+                            borrow.EndDate = reader.GetDateTime(4);
+                        }
                         borrow.Employee = new Employee
                         {
                             EmployeeId = id,

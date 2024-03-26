@@ -93,5 +93,24 @@ namespace InventoryTracker.API.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet("Equipment")]
+        public async Task<IActionResult> GetBorrowsByEquipmentId(Guid id, bool active)
+        {
+            try
+            {
+                var result = await _logic.GetBorrowsByEquipment(id, active);
+                return Ok(result.Select(x => x.ToHistoryDisplayDTO()));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

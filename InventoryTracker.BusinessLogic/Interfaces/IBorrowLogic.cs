@@ -10,6 +10,7 @@ namespace InventoryTracker.BusinessLogic.Interfaces
         public Task <List<Borrow>> GetBorrowsByEmployee(Guid id,bool active);
 
         public Task<List<Borrow>> GetBorrowsByClassRoom(Guid id, bool active);
+        public Task<List<Borrow>> GetBorrowsByEquipment(Guid id, bool active);
 
     }
 }

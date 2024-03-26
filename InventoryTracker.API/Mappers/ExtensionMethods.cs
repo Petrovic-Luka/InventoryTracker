@@ -8,12 +8,30 @@ namespace InventoryTracker.API.Mappers
     {
         public static DisplayBorrowDTO ToDisplayDTO(this Borrow borrow)
         {
-            return new DisplayBorrowDTO
+
+            var temp = new DisplayBorrowDTO();
+            temp.EmployeeId = borrow.EmployeeId;
+            temp.EquipmentId = borrow.EquipmentId;
+            temp.DisplayString = $"{borrow.Equipment?.Description} {borrow.Equipment?.InventoryMark}";
+            return temp;
+        }
+
+        public static DisplayBorrowDTO ToHistoryDisplayDTO(this Borrow borrow)
+        {
+            var temp = new DisplayBorrowDTO();
+            temp.EmployeeId = borrow.EmployeeId;
+            temp.EquipmentId = borrow.EquipmentId;
+            temp.DisplayString = $"{borrow.Equipment?.InventoryMark} {borrow.Employee?.MailAddress} {borrow.StartDate.ToShortDateString()}";
+            if(borrow.EndDate != null)
             {
-                EmployeeId = borrow.EmployeeId,
-                EquipmentId = borrow.EquipmentId,
-                DisplayString = $"{borrow.Equipment?.Description} {borrow.Equipment?.InventoryMark}"
-            };
+                temp.DisplayString += $" {borrow.EndDate.Value.ToShortDateString()}";
+            }
+            else
+            {
+                temp.DisplayString += " /";
+            }
+
+            return temp;
         }
 
         public static EquipmentTypeDTO ToEquipmentTypeDTO(this EquipmentType equipmentType)

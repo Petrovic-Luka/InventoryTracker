@@ -1,5 +1,6 @@
 ﻿using InventoryTracker.Domain;
 using InventoryTrackerDTO.Borrow;
+using InventoryTrackerDTO.Equipment;
 using InventoryTrackerDTO.EquipmentType;
 
 namespace InventoryTracker.API.Mappers
@@ -41,6 +42,17 @@ namespace InventoryTracker.API.Mappers
                 EquipmentTypeId = equipmentType.EquipmentTypeId,
                 Name = equipmentType.Name
             };
+        }
+
+        public static DisplayEquipmentDTO ToDisplayEquipmentDTO(this Equipment equipment)
+        {
+            var temp=new DisplayEquipmentDTO();
+            temp.EquipmentId= equipment.EquipmentId;
+            temp.Description = equipment.Description;
+            temp.InventoryMark = equipment.InventoryMark;
+            temp.SerialMark=equipment.SerialMark;
+            temp.DisplayString = $"{equipment.Description} {equipment.InventoryMark}";
+            return temp;
         }
     }
 }

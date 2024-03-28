@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InventoryTracker.API.Mappers;
 using InventoryTracker.BusinessLogic.Interfaces;
 using InventoryTracker.Domain;
 using InventoryTrackerDTO.Equipment;
@@ -41,7 +42,7 @@ namespace InventoryTracker.API.Controllers
         {
             try
             {
-                return Ok(await _logic.GetAllEquipment());
+                return Ok((await _logic.GetAllEquipment()).Select(x=>x.ToDisplayEquipmentDTO()));
             }
             catch (Exception ex)
             {
@@ -55,7 +56,7 @@ namespace InventoryTracker.API.Controllers
             try
             {
 
-                return Ok(await _logic.GetEquipmentByType(typeId,available));
+                return Ok((await _logic.GetEquipmentByType(typeId,available)).Select(x=>x.ToDisplayEquipmentDTO()));
             }
             catch (Exception ex)
             {

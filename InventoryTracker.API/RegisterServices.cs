@@ -1,7 +1,6 @@
 ﻿using InventoryTracker.API.Mappers;
 using InventoryTracker.BusinessLogic;
 using InventoryTracker.BusinessLogic.Interfaces;
-using InventoryTracker.DataAccess.InMemory;
 using InventoryTracker.DataAccess.Interfaces;
 using InventoryTracker.DataAccess.SQL;
 

@@ -1,12 +1,6 @@
 ﻿using InventoryTracker.BusinessLogic.Interfaces;
 using InventoryTracker.DataAccess.Interfaces;
 using InventoryTracker.Domain;
-using InventoryTracker.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventoryTracker.BusinessLogic
 {
@@ -38,11 +32,6 @@ namespace InventoryTracker.BusinessLogic
         public async Task<List<Equipment>> GetEquipmentByType(int typeId, bool available)
         {
             return await repository.GetEquipmentByType(typeId, available);
-        }
-
-        public Task UpdateEquipment()
-        {
-            throw new NotImplementedException();
         }
 
         public Task UpdateEquipment(Equipment equipment)

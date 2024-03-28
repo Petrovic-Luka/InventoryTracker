@@ -26,7 +26,7 @@ namespace InventoryTracker.API.Controllers
             {
                 var temp = mapper.Map<Equipment>(equipment);
                 await _logic.CreateEquipment(temp);
-                return Ok();
+                return Ok("Equipment added");
             }
             catch(ArgumentException ex)
             {

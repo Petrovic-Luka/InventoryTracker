@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\..\..\..\Desktop\db.sql = ..\..\..\..\Desktop\db.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryTracker.Validators", "InventoryTracker.Validators\InventoryTracker.Validators.csproj", "{634E2105-9A0F-45C7-89C9-8D4C1246222A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{6CEC18FB-467B-4346-8020-59A9667BAE8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CEC18FB-467B-4346-8020-59A9667BAE8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CEC18FB-467B-4346-8020-59A9667BAE8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{634E2105-9A0F-45C7-89C9-8D4C1246222A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{634E2105-9A0F-45C7-89C9-8D4C1246222A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{634E2105-9A0F-45C7-89C9-8D4C1246222A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{634E2105-9A0F-45C7-89C9-8D4C1246222A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

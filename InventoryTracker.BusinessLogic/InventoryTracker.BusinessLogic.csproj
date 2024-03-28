@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InventoryTracker.DataAccess\InventoryTracker.DataAccess.csproj" />
+    <ProjectReference Include="..\InventoryTracker.Validators\InventoryTracker.Validators.csproj" />
     <ProjectReference Include="..\InventoryTrackerDTO\InventoryTrackerDTO.csproj" />
   </ItemGroup>
 

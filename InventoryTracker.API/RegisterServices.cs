@@ -1,8 +1,12 @@
-﻿using InventoryTracker.API.Mappers;
+﻿using FluentValidation;
+using InventoryTracker.API.Mappers;
 using InventoryTracker.BusinessLogic;
 using InventoryTracker.BusinessLogic.Interfaces;
 using InventoryTracker.DataAccess.Interfaces;
 using InventoryTracker.DataAccess.SQL;
+using InventoryTracker.Domain;
+using InventoryTracker.Validators;
+using Microsoft.AspNetCore.Identity;
 
 namespace InventoryTracker.API
 {
@@ -29,6 +33,7 @@ namespace InventoryTracker.API
             //equipment
             builder.Services.AddTransient<IEquipmentLogic, EquipmentLogic>();
             builder.Services.AddTransient<IEquipmentRepository, EquipmentSQLRepository>();
+            builder.Services.AddTransient<IValidator<Equipment>, EquipmentValidator>();
 
             //borrow
             builder.Services.AddTransient<IBorrowLogic, BorrowLogic>();

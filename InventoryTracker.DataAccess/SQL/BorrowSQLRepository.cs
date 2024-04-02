@@ -1,7 +1,6 @@
 ﻿using InventoryTracker.DataAccess.Enums;
 using InventoryTracker.DataAccess.Interfaces;
 using InventoryTracker.Domain;
-using InventoryTracker.Domain.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Data.SqlClient;
@@ -39,7 +38,7 @@ namespace InventoryTracker.DataAccess.SQL
                     var result = (Int32)(await cmd.ExecuteScalarAsync());
                     if (result != 1)
                     {
-                        throw new ArgumentException("Equipment is taken");
+                        throw new ArgumentException("Equipment is not available");
                     }
 
                     //update equipment status
@@ -47,7 +46,7 @@ namespace InventoryTracker.DataAccess.SQL
                     result = await cmd.ExecuteNonQueryAsync();
                     if (result != 1)
                     {
-                        throw new Exception("Status update failed");
+                        throw new ArgumentException("Status update failed");
                     }
 
                     cmd.CommandText = "Insert into Borrow values (@EquipmentId,@EmployeeId,@StartDate,@ClassRoomId,NULL)";
@@ -59,7 +58,7 @@ namespace InventoryTracker.DataAccess.SQL
                     var output = await cmd.ExecuteNonQueryAsync();
                     if (output == 0)
                     {
-                        throw new Exception("Insertion failed");
+                        throw new ArgumentException("Insertion failed");
                     }
                     await transaction.CommitAsync();
                 }
@@ -144,7 +143,7 @@ namespace InventoryTracker.DataAccess.SQL
                     var result = await cmd.ExecuteNonQueryAsync();
                     if (result != 1)
                     {
-                        throw new Exception("Status update failed");
+                        throw new ArgumentException("Status update failed equipment not found");
                     }
 
                     cmd.CommandText = "Update Borrow set EndDate=@EndDate where EquipmentId=@EquipmentId and EmployeeId=@EmployeeId and EndDate is NULL";
@@ -155,7 +154,7 @@ namespace InventoryTracker.DataAccess.SQL
                     var output = await cmd.ExecuteNonQueryAsync();
                     if (output == 0)
                     {
-                        throw new Exception("Update failed");
+                        throw new ArgumentException("Update failed borrow not found");
                     }
                     await transaction.CommitAsync();
                 }

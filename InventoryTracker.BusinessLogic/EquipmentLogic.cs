@@ -38,6 +38,16 @@ namespace InventoryTracker.BusinessLogic
             return await repository.GetAllEquipment();
         }
 
+        public async Task RetireEquipment(Equipment equipment)
+        {
+            int status = (int)equipment.EquipmentStatus;
+            if(status!=3 && status!=4)
+            {
+                throw new ArgumentException("Equipment status not valid");
+            }
+            await repository.RetireEquipment(equipment);
+        }
+
         public Task<Equipment> GetEquipmentById(Guid id)
         {
             throw new NotImplementedException();

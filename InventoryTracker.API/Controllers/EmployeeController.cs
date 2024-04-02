@@ -25,7 +25,7 @@ namespace InventoryTracker.API.Controllers
             {
                 var temp = mapper.Map<Employee>(employeeDTO);
                 await logic.CreateEmployeeAsync(temp);
-                return Ok();
+                return Ok("Employee created");
             }
             catch (ArgumentException ex)
             {

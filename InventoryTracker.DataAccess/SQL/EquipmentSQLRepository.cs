@@ -31,6 +31,18 @@ namespace InventoryTracker.DataAccess.SQL
                     transaction = connection.BeginTransaction();
                     SqlCommand cmd = connection.CreateCommand();
                     cmd.Transaction = transaction;
+
+                    //check if exists
+                    cmd.CommandText = "Select count(*) from Equipment where InventoryMark=@InventoryMark and SerialMark=@SerialMark";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@InventoryMark", equipment.InventoryMark);
+                    cmd.Parameters.AddWithValue("@SerialMark", equipment.SerialMark);
+                    var result = (Int32)(await cmd.ExecuteScalarAsync());
+                    if (result != 0)
+                    {
+                        throw new ArgumentException("Equipment with given serial and inventory mark already exists");
+                    }
+
                     cmd.CommandText = "Insert into Equipment values (@EquipmentId,@Description,@Note,@SerialMark,@InventoryMark,@EquipmentTypeId,@Status)";
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@EquipmentId", equipment.EquipmentId);
@@ -50,7 +62,7 @@ namespace InventoryTracker.DataAccess.SQL
                     var output = await cmd.ExecuteNonQueryAsync();
                     if (output == 0)
                     {
-                        throw new Exception("Insertion failed");
+                        throw new ArgumentException("Insertion failed");
                     }
                     await transaction.CommitAsync();
                 }
@@ -91,6 +103,48 @@ namespace InventoryTracker.DataAccess.SQL
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError(ex.Message);
+                    throw;
+                }
+            }
+        }
+
+        public async Task RetireEquipment(Equipment equipment)
+        {
+            SqlTransaction transaction = null;
+            using (SqlConnection connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+
+                try
+                {
+                    await connection.OpenAsync();
+                    transaction = connection.BeginTransaction();
+                    SqlCommand cmd = connection.CreateCommand();
+                    cmd.Transaction = transaction;
+
+                    //check if equipment is taken
+                    cmd.CommandText = "Select count(*) from Equipment where EquipmentId=@EquipmentId and status=0";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@EquipmentId", equipment.EquipmentId);
+                    var result = (Int32)(await cmd.ExecuteScalarAsync());
+                    if (result != 1)
+                    {
+                        throw new ArgumentException("Equipment is not available");
+                    }
+
+                    //update equipment status
+                    cmd.CommandText = "Update Equipment set Status=@Status where EquipmentId=@EquipmentId";
+                    cmd.Parameters.AddWithValue("@Status", equipment.EquipmentStatus);
+                    result = await cmd.ExecuteNonQueryAsync();
+                    if (result != 1)
+                    {
+                        throw new ArgumentException("Status update failed");
+                    }
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    transaction?.Rollback();
                     _logger.LogError(ex.Message);
                     throw;
                 }

@@ -40,7 +40,7 @@ namespace InventoryTracker.DataAccess.SQL
                     var output = await cmd.ExecuteNonQueryAsync();
                     if (output == 0)
                     {
-                        throw new Exception("Insertion failed");
+                        throw new ArgumentException("Insertion failed");
                     }
                     await transaction.CommitAsync();
                 }

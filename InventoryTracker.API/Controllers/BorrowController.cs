@@ -27,7 +27,7 @@ namespace InventoryTracker.API.Controllers
             {
                 var temp=_mapper.Map<Borrow>(borrow);
                 await _logic.CreateBorrow(temp);
-                return Ok();
+                return Ok("Borrow saved");
             }
             catch (ArgumentException ex)
             {
@@ -46,7 +46,7 @@ namespace InventoryTracker.API.Controllers
             {
                 var temp = _mapper.Map<Borrow>(borrow);
                 await _logic.ReturnBorrow(temp);
-                return Ok();
+                return Ok("Return saved");
             }
             catch (ArgumentException ex)
             {

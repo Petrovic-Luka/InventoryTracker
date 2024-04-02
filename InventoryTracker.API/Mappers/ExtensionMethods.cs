@@ -1,4 +1,5 @@
 ﻿using InventoryTracker.Domain;
+using InventoryTracker.Domain.Enums;
 using InventoryTrackerDTO.Borrow;
 using InventoryTrackerDTO.Equipment;
 using InventoryTrackerDTO.EquipmentType;
@@ -22,7 +23,7 @@ namespace InventoryTracker.API.Mappers
             var temp = new DisplayBorrowDTO();
             temp.EmployeeId = borrow.EmployeeId;
             temp.EquipmentId = borrow.EquipmentId;
-            temp.DisplayString = $"{borrow.Equipment?.InventoryMark} {borrow.Employee?.MailAddress} {borrow.StartDate.ToShortDateString()}";
+            temp.DisplayString = $"{borrow.Equipment?.InventoryMark} {borrow.Employee?.MailAddress} {borrow.StartDate.ToShortDateString()} - ";
             if(borrow.EndDate != null)
             {
                 temp.DisplayString += $" {borrow.EndDate.Value.ToShortDateString()}";
@@ -51,7 +52,16 @@ namespace InventoryTracker.API.Mappers
             temp.Description = equipment.Description;
             temp.InventoryMark = equipment.InventoryMark;
             temp.SerialMark=equipment.SerialMark;
+            temp.status = (int)equipment.EquipmentStatus;
             temp.DisplayString = $"{equipment.Description} {equipment.InventoryMark}";
+            return temp;
+        }
+
+        public static Equipment ToEquipment(this RetireEquipmentDTO retireEquipment)
+        {
+            var temp=new Equipment();
+            temp.EquipmentId= retireEquipment.EquipmentId;
+            temp.EquipmentStatus = (EquipmentStatus)retireEquipment.status;
             return temp;
         }
     }

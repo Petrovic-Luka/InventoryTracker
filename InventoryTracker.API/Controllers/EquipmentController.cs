@@ -63,5 +63,23 @@ namespace InventoryTracker.API.Controllers
                 return StatusCode(500, "Error has occurred");
             }
         }
+
+        [HttpPut("retire")]
+        public async Task<IActionResult> RetireEquipment(RetireEquipmentDTO equipment)
+        {
+            try
+            {
+                await _logic.RetireEquipment(equipment.ToEquipment());
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error has occurred");
+            }
+        }
     }
 }

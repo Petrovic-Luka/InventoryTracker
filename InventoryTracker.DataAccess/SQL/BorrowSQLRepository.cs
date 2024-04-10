@@ -62,6 +62,16 @@ namespace InventoryTracker.DataAccess.SQL
                     }
                     await transaction.CommitAsync();
                 }
+                //Equipment cant be borrowed 2 times by same person on same day
+                catch (SqlException ex)
+                {
+                    if (ex.Message.Contains("Violation of PRIMARY KEY"))
+                    {
+                        transaction?.Rollback();
+                        throw new ArgumentException("Borrow failed check if you already borrowed equipment today");
+
+                    }
+                }
                 catch (Exception ex)
                 {
                     transaction?.Rollback();
@@ -71,7 +81,7 @@ namespace InventoryTracker.DataAccess.SQL
             }
         }
 
-        public async Task<List<Borrow>> GetBorrowsByFilter(Guid id,BorrowSearch criteria, bool active)
+        public async Task<List<Borrow>> GetBorrowsByFilter(Guid id, BorrowSearch criteria, bool active)
         {
             using (SqlConnection connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
@@ -82,7 +92,7 @@ namespace InventoryTracker.DataAccess.SQL
                     await connection.OpenAsync();
                     SqlCommand cmd = connection.CreateCommand();
                     cmd.CommandText = $"SELECT [borrow].[EquipmentId],[borrow].[EmployeeId],[StartDate],[ClassRoomId],[EndDate],e.MailAddress,eq.Description,eq.InventoryMark FROM [InventoryTrackerDB].[dbo].[Borrow] join Employee e on (e.EmployeeId=borrow.EmployeeId) join Equipment eq on (eq.EquipmentId=Borrow.EquipmentId) where borrow.{criteria}=@{criteria}";
-                    if(active)
+                    if (active)
                     {
                         cmd.CommandText += " and EndDate is Null";
                     }
@@ -108,8 +118,8 @@ namespace InventoryTracker.DataAccess.SQL
                         borrow.Equipment = new Equipment
                         {
                             EquipmentId = borrow.EquipmentId,
-                            Description=reader.GetString(6),
-                            InventoryMark=reader.GetString(7),
+                            Description = reader.GetString(6),
+                            InventoryMark = reader.GetString(7),
                         };
                         output.Add(borrow);
                     }

@@ -41,7 +41,7 @@ namespace InventoryTracker.BusinessLogic
         public async Task RetireEquipment(Equipment equipment)
         {
             int status = (int)equipment.EquipmentStatus;
-            if(status!=3 && status!=4)
+            if(status!=2 && status!=3)
             {
                 throw new ArgumentException("Equipment status not valid");
             }

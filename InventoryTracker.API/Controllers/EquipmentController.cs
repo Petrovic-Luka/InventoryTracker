@@ -70,7 +70,7 @@ namespace InventoryTracker.API.Controllers
             try
             {
                 await _logic.RetireEquipment(equipment.ToEquipment());
-                return Ok();
+                return Ok("Status changed");
             }
             catch (ArgumentException ex)
             {

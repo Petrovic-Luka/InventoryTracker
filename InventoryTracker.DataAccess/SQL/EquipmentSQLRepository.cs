@@ -123,19 +123,31 @@ namespace InventoryTracker.DataAccess.SQL
                     cmd.Transaction = transaction;
 
                     //check if equipment is taken
-                    cmd.CommandText = "Select count(*) from Equipment where EquipmentId=@EquipmentId and status=0";
+                    cmd.CommandText = "SELECT [Status] FROM [InventoryTrackerDB].[dbo].[Equipment] where EquipmentId=@EquipmentId";
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@EquipmentId", equipment.EquipmentId);
-                    var result = (Int32)(await cmd.ExecuteScalarAsync());
-                    if (result != 1)
+                    var currentStatus = await cmd.ExecuteScalarAsync();
+                    if (currentStatus == null)
                     {
-                        throw new ArgumentException("Equipment is not available");
+                        throw new ArgumentException("Equipment not found");
+                    }
+
+                    int currentStatusValue = (int)currentStatus;
+
+                    if(currentStatusValue == 1 || currentStatusValue == 3)
+                    {
+                        throw new ArgumentException("Status change not possible");
+                    }
+
+                    if(currentStatusValue == 2 && equipment.EquipmentStatus != EquipmentStatus.Expended)
+                    {
+                        throw new ArgumentException("Status change not possible");
                     }
 
                     //update equipment status
                     cmd.CommandText = "Update Equipment set Status=@Status where EquipmentId=@EquipmentId";
                     cmd.Parameters.AddWithValue("@Status", equipment.EquipmentStatus);
-                    result = await cmd.ExecuteNonQueryAsync();
+                    var result = await cmd.ExecuteNonQueryAsync();
                     if (result != 1)
                     {
                         throw new ArgumentException("Status update failed");

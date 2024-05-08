@@ -13,6 +13,7 @@ namespace InventoryTracker.BusinessLogic.Interfaces
 
         public Task RetireEquipment(Equipment equipment);
         public Task<List<Equipment>> GetEquipmentByType(int typeId, bool available);
+        public Task<Equipment> GetEquipmentByInventoryMark(string mark);
 
     }
 }

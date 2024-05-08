@@ -31,11 +31,21 @@ namespace InventoryTracker.DataAccess.SQL
                     SqlCommand cmd = connection.CreateCommand();
                     cmd.Transaction = transaction;
 
-                    //check if equipment is taken
+                    //check if equipment inventoryMark is valid
                     cmd.CommandText = "Select count(*) from Equipment where EquipmentId=@EquipmentId and status=0";
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@EquipmentId", borrow.EquipmentId);
                     var result = (Int32)(await cmd.ExecuteScalarAsync());
+                    if (result != 1)
+                    {
+                        throw new ArgumentException("Equipment is not available");
+                    }
+
+                    //check if equipment is taken
+                    cmd.CommandText = "Select count(*) from Equipment where EquipmentId=@EquipmentId and status=0";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@EquipmentId", borrow.EquipmentId);
+                    result = (Int32)(await cmd.ExecuteScalarAsync());
                     if (result != 1)
                     {
                         throw new ArgumentException("Equipment is not available");

@@ -2,8 +2,8 @@
 {
     public class CreateBorrowDTO
     {
-        public Guid EquipmentId { get; set; }
-        public Guid EmployeeId { get; set; }
+        public string EmployeeMailAddress { get; set; }
+        public string EquipmentInventoryMark { get; set; }
         public Guid ClassRoomId { get; set; }
 
 

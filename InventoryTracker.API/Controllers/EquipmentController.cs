@@ -56,7 +56,29 @@ namespace InventoryTracker.API.Controllers
             try
             {
 
-                return Ok((await _logic.GetEquipmentByType(typeId,available)).Select(x=>x.ToDisplayEquipmentDTO()));
+                return Ok((await _logic.GetEquipmentByType(typeId,available)).Select(x=>x.ToExtendedDisplayEquipmentDTO()));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error has occurred");
+            }
+        }
+
+        [HttpGet("InventoryMark")]
+        public async Task<IActionResult> GetEquipmentByInventoryMark(string inventoryMark)
+        {
+            try
+            {
+
+                return Ok((await _logic.GetEquipmentByInventoryMark(inventoryMark)).ToDisplayEquipmentDTO());
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

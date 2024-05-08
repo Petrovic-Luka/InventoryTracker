@@ -75,5 +75,10 @@ namespace InventoryTracker.DataAccess.InMemory
             temp.MailAddress = employee.MailAddress;
             return Task.CompletedTask;
         }
+
+        public Task<Employee> GetEmployeeByMailAddress(string email)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

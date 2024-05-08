@@ -8,6 +8,7 @@ namespace InventoryTracker.DataAccess.Interfaces
         Task DeleteEmployee(Guid id);
         Task<List<Employee>> GetAllEmployeesAsync();
         Task<Employee?> GetEmployeeById(Guid id);
+        Task<Employee> GetEmployeeByMailAddress(string email);
         Task UpdateEmployee(Employee employee);
     }
 }

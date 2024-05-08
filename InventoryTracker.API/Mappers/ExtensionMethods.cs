@@ -57,6 +57,18 @@ namespace InventoryTracker.API.Mappers
             return temp;
         }
 
+        public static DisplayEquipmentDTO ToExtendedDisplayEquipmentDTO(this Equipment equipment)
+        {
+            var temp = new DisplayEquipmentDTO();
+            temp.EquipmentId = equipment.EquipmentId;
+            temp.Description = equipment.Description;
+            temp.InventoryMark = equipment.InventoryMark;
+            temp.SerialMark = equipment.SerialMark;
+            temp.status = (int)equipment.EquipmentStatus;
+            temp.DisplayString = $"{equipment.Description} {equipment.InventoryMark} {equipment.EquipmentStatus} {equipment.Note}";
+            return temp;
+        }
+
         public static Equipment ToEquipment(this RetireEquipmentDTO retireEquipment)
         {
             var temp=new Equipment();

@@ -48,9 +48,9 @@ namespace InventoryTracker.BusinessLogic
             await repository.RetireEquipment(equipment);
         }
 
-        public Task<Equipment> GetEquipmentById(Guid id)
+        public async Task<Equipment> GetEquipmentById(Guid id)
         {
-            throw new NotImplementedException();
+            return await repository.GetEquipmentById(id);
         }
 
         public async Task<List<Equipment>> GetEquipmentByType(int typeId, bool available)
@@ -61,6 +61,15 @@ namespace InventoryTracker.BusinessLogic
         public Task UpdateEquipment(Equipment equipment)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Equipment> GetEquipmentByInventoryMark(string mark)
+        {
+            if(mark == null || mark.Length!=10)
+            {
+                throw new ArgumentException("Inventory mark not valid, it must be 10 characters long");
+            }
+            return await repository.GetEquipmentByInventoryMark(mark);
         }
     }
 }

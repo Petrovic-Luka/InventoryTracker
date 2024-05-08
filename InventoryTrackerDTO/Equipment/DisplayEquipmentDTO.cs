@@ -7,7 +7,6 @@
         public string SerialMark { get; set; }
         public string InventoryMark { get; set; }
         public string DisplayString { get; set; }
-
         public int status { get; set; } 
     }
 }

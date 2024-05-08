@@ -25,8 +25,7 @@ namespace InventoryTracker.API.Controllers
         {
             try
             {
-                var temp=_mapper.Map<Borrow>(borrow);
-                await _logic.CreateBorrow(temp);
+                await _logic.CreateBorrow(borrow);
                 return Ok("Borrow saved");
             }
             catch (ArgumentException ex)
@@ -44,8 +43,7 @@ namespace InventoryTracker.API.Controllers
         {
             try
             {
-                var temp = _mapper.Map<Borrow>(borrow);
-                await _logic.ReturnBorrow(temp);
+                await _logic.ReturnBorrow(borrow);
                 return Ok("Return saved");
             }
             catch (ArgumentException ex)
@@ -59,11 +57,11 @@ namespace InventoryTracker.API.Controllers
             }
         }
         [HttpGet("Employee")]
-        public async Task<IActionResult>GetBorrowsByEmployeeId(Guid id,bool active)
+        public async Task<IActionResult>GetBorrowsByEmployeeId(string email,bool active)
         {
             try
             {
-                var result = await _logic.GetBorrowsByEmployee(id, active);
+                var result = await _logic.GetBorrowsByEmployee(email, active);
                 return Ok(result.Select(x=>x.ToDisplayDTO()));
             }
             catch (ArgumentException ex)
@@ -112,5 +110,7 @@ namespace InventoryTracker.API.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+
     }
 }

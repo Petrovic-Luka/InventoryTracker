@@ -134,12 +134,12 @@ namespace InventoryTracker.DataAccess.SQL
 
                     int currentStatusValue = (int)currentStatus;
 
-                    if(currentStatusValue == 1 || currentStatusValue == 3)
+                    if (currentStatusValue == 1 || currentStatusValue == 3)
                     {
                         throw new ArgumentException("Status change not possible");
                     }
 
-                    if(currentStatusValue == 2 && equipment.EquipmentStatus != EquipmentStatus.Expended)
+                    if (currentStatusValue == 2 && equipment.EquipmentStatus != EquipmentStatus.Expended)
                     {
                         throw new ArgumentException("Status change not possible");
                     }
@@ -163,9 +163,78 @@ namespace InventoryTracker.DataAccess.SQL
             }
         }
 
-        public Task<Equipment> GetEquipmentById(Guid id)
+        public async Task<Equipment> GetEquipmentById(Guid id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+
+                try
+                {
+                    Equipment output = null;
+                    await connection.OpenAsync();
+                    SqlCommand cmd = connection.CreateCommand();
+                    cmd.CommandText = "select [EquipmentId],[Description],[Note],[SerialMark],[InventoryMark],[EquipmentTypeId],[Status] FROM [InventoryTrackerDB].[dbo].[Equipment] where equipmentId = @equipmentId";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@equipmentId", id);
+                    var reader = await cmd.ExecuteReaderAsync();
+                    if (reader.Read())
+                    {
+                        output = new Equipment();
+                        output.EquipmentId = Guid.Parse(reader.GetString(0));
+                        output.Description = reader.GetString(1);
+                        output.Note = reader.GetString(2);
+                        output.SerialMark = reader.GetString(3);
+                        output.InventoryMark = reader.GetString(4);
+                        output.EquipmentTypeId = reader.GetInt32(5);
+                        output.EquipmentStatus = (EquipmentStatus)reader.GetInt32(6);
+                    }
+                    return output;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    throw;
+                }
+            }
+        }
+
+        public async Task<Equipment> GetEquipmentByInventoryMark(string mark)
+        {
+            using (SqlConnection connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+
+                try
+                {
+                    Equipment output = null;
+                    await connection.OpenAsync();
+                    SqlCommand cmd = connection.CreateCommand();
+                    cmd.CommandText = "select [EquipmentId],[Description],[Note],[SerialMark],[InventoryMark],[EquipmentTypeId],[Status] FROM [InventoryTrackerDB].[dbo].[Equipment] where InventoryMark = @InventoryMark";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@InventoryMark", mark);
+                    var reader = await cmd.ExecuteReaderAsync();
+                    if (reader.Read())
+                    {
+                        output = new Equipment();
+                        output.EquipmentId = Guid.Parse(reader.GetString(0));
+                        output.Description = reader.GetString(1);
+                        output.Note = reader.GetString(2);
+                        output.SerialMark = reader.GetString(3);
+                        output.InventoryMark = reader.GetString(4);
+                        output.EquipmentTypeId = reader.GetInt32(5);
+                        output.EquipmentStatus = (EquipmentStatus)reader.GetInt32(6);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Equipment not found");
+                    }
+                    return output;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    throw;
+                }
+            }
         }
 
         public async Task<List<Equipment>> GetEquipmentByType(int typeId, bool available)
@@ -183,6 +252,7 @@ namespace InventoryTracker.DataAccess.SQL
                     {
                         cmd.CommandText += " and status=0";
                     }
+                    cmd.CommandText += "  order by [Description]";
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@EquipmentTypeId", typeId);
                     var reader = await cmd.ExecuteReaderAsync();

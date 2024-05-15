@@ -62,7 +62,7 @@ namespace InventoryTracker.API.Controllers
             try
             {
                 var result = await _logic.GetBorrowsByEmployee(email, active);
-                return Ok(result.Select(x=>x.ToDisplayDTO()));
+                return Ok(result.Select(x=>x.ToEmployeeDisplayDTO()));
             }
             catch (ArgumentException ex)
             {

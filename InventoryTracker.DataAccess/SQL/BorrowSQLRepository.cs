@@ -106,6 +106,7 @@ namespace InventoryTracker.DataAccess.SQL
                     {
                         cmd.CommandText += " and EndDate is Null";
                     }
+                    cmd.CommandText += " order by [StartDate] desc";
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue($"@{criteria}", id);
                     var reader = await cmd.ExecuteReaderAsync();
